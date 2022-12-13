@@ -68,7 +68,7 @@ public class UserTokenEndpointService : IUserTokenEndpointService
             RefreshToken = refreshToken
         };
         
-        request.Options.TryAdd(ClientCredentialsTokenManagementDefaults.TokenRequestParametersOptionsName, parameters);
+        request.Properties[ClientCredentialsTokenManagementDefaults.TokenRequestParametersOptionsName] = parameters;
         
         if (!string.IsNullOrEmpty(parameters.Resource))
         {
@@ -174,7 +174,11 @@ public class UserTokenEndpointService : IUserTokenEndpointService
             TokenTypeHint = OidcConstants.TokenTypes.RefreshToken
         };
         
+#if NET5_0_OR_GREATER
         request.Options.TryAdd(ClientCredentialsTokenManagementDefaults.TokenRequestParametersOptionsName, parameters);
+#else
+        request.Properties[ClientCredentialsTokenManagementDefaults.TokenRequestParametersOptionsName] = parameters;
+#endif
        
         if (parameters.Assertion != null)
         {

@@ -24,7 +24,7 @@ public static class ClientCredentialsTokenManagementServiceCollectionExtensions
         this IServiceCollection services,
         Action<ClientCredentialsTokenManagementOptions> options)
     {
-        ArgumentNullException.ThrowIfNull(options);
+        _ = options ?? throw new ArgumentNullException(nameof(options));
 
         services.Configure(options);
         return services.AddClientCredentialsTokenManagement();
@@ -82,8 +82,8 @@ public static class ClientCredentialsTokenManagementServiceCollectionExtensions
     string tokenClientName,
     Action<HttpClient>? configureClient = null)
     {
-        ArgumentNullException.ThrowIfNull(httpClientName);
-        ArgumentNullException.ThrowIfNull(tokenClientName);
+        httpClientName.ThrowIfNull(nameof(httpClientName));
+        tokenClientName.ThrowIfNull(nameof(tokenClientName));
 
         if (configureClient != null)
         {
@@ -109,8 +109,8 @@ public static class ClientCredentialsTokenManagementServiceCollectionExtensions
         string tokenClientName,
         Action<IServiceProvider, HttpClient>? configureClient = null)
     {
-        ArgumentNullException.ThrowIfNull(httpClientName);
-        ArgumentNullException.ThrowIfNull(tokenClientName);
+        httpClientName.ThrowIfNull(httpClientName);
+        tokenClientName.ThrowIfNull(tokenClientName);
 
         if (configureClient != null)
         {
@@ -132,7 +132,7 @@ public static class ClientCredentialsTokenManagementServiceCollectionExtensions
         this IHttpClientBuilder httpClientBuilder,
         string tokenClientName)
     {
-        ArgumentNullException.ThrowIfNull(tokenClientName);
+        tokenClientName.ThrowIfNull(nameof(tokenClientName));
 
         return httpClientBuilder.AddHttpMessageHandler(provider =>
         {

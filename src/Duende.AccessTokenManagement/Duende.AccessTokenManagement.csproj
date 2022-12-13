@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
         <PackageId>Duende.AccessTokenManagement</PackageId>
         <Description>Automatic access token management for OAuth client credential flows</Description>
+        <LangVersion>default</LangVersion>
+        <TargetFrameworks>net48;netstandard2.0</TargetFrameworks>
     </PropertyGroup>
         
 

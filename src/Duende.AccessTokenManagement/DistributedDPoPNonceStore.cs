@@ -36,7 +36,7 @@ public class DistributedDPoPNonceStore : IDPoPNonceStore
     /// <inheritdoc/>
     public virtual async Task<string?> GetNonceAsync(DPoPNonceContext context, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(context);
+        if (context is null) throw new ArgumentNullException(nameof(context));
 
         var cacheKey = GenerateCacheKey(context);
         var entry = await _cache.GetStringAsync(cacheKey, token: cancellationToken).ConfigureAwait(false);
@@ -54,7 +54,7 @@ public class DistributedDPoPNonceStore : IDPoPNonceStore
     /// <inheritdoc/>
     public virtual async Task StoreNonceAsync(DPoPNonceContext context, string nonce, CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(context);
+        if (context is null) throw new ArgumentNullException(nameof(context));
 
         var cacheExpiration = DateTimeOffset.UtcNow.AddHours(1);
         var data = nonce;

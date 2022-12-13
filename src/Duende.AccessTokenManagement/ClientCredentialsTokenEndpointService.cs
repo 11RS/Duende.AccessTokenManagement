@@ -112,7 +112,7 @@ public class ClientCredentialsTokenEndpointService : IClientCredentialsTokenEndp
             }
         }
         
-        request.Options.TryAdd(ClientCredentialsTokenManagementDefaults.TokenRequestParametersOptionsName, parameters);
+        request.Properties[ClientCredentialsTokenManagementDefaults.TokenRequestParametersOptionsName] = parameters;
 
         var key = await _dPoPKeyMaterialService.GetKeyAsync(clientName);
         if (key != null)

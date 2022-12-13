@@ -53,16 +53,16 @@ public static class DPoPExtensions
             if (header != null && header.Parameter != null)
             {
                 // WWW-Authenticate: DPoP error="use_dpop_nonce"
-                var values = header.Parameter.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                var values = header.Parameter.Split(new [] {','}, StringSplitOptions.RemoveEmptyEntries);
                 var error = values.Select(x =>
                 {
-                    var parts = x.Split('=', StringSplitOptions.RemoveEmptyEntries);
+                    var parts = x.Split(new [] {'='}, StringSplitOptions.RemoveEmptyEntries);
                     if (parts.Length == 2 && parts[0] == OidcConstants.TokenResponse.Error)
                     {
                         return parts[1].Trim('"');
                     }
                     return null;
-                }).Where(x => x != null).FirstOrDefault();
+                }).FirstOrDefault(x => x != null);
 
                 return error == OidcConstants.TokenErrors.UseDPoPNonce || error == OidcConstants.TokenErrors.InvalidDPoPProof;
             }
