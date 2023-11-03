@@ -7,6 +7,7 @@ using Serilog.Sinks.SystemConsole.Themes;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Text.Json;
+using NeoSmart.Caching.Sqlite;
 
 namespace WorkerService;
 
@@ -22,6 +23,8 @@ public class Program
         CreateHostBuilder(args).Build().Run();
     }
 
+    private const string CachePath = $"token-cache.sqlite";
+
     public static IHostBuilder CreateHostBuilder(string[] args)
     {
         var host = Host.CreateDefaultBuilder(args)
@@ -29,7 +32,9 @@ public class Program
                 
             .ConfigureServices((services) =>
             {
-                services.AddDistributedMemoryCache();
+                var sqliteProvider = new SQLitePCL.SQLite3Provider_e_sqlite3();
+
+                services.AddSqliteCache(CachePath, sqliteProvider);
 
                 services.AddClientCredentialsTokenManagement()
                     .AddClient("demo", client =>
@@ -83,8 +88,8 @@ public class Program
                 //services.AddHostedService<WorkerManual>();
                 //services.AddHostedService<WorkerManualJwt>();
                 //services.AddHostedService<WorkerHttpClient>();
-                //services.AddHostedService<WorkerTypedHttpClient>();
-                services.AddHostedService<WorkerDPoPHttpClient>();
+                services.AddHostedService<WorkerTypedHttpClient>();
+                //services.AddHostedService<WorkerDPoPHttpClient>();
             });
 
         return host;
