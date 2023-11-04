@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using NeoSmart.Caching.Sqlite;
 using Serilog;
 using Serilog.Events;
 
@@ -14,10 +15,13 @@ namespace WebJarJwt;
 
 public static class Startup
 {
+    private const string CachePath = $"token-cache.sqlite";
+
     internal static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddControllersWithViews();
         builder.Services.AddTransient<OidcEvents>();
+        builder.Services.AddSqliteCache(CachePath, new SQLitePCL.SQLite3Provider_e_sqlite3());
 
         builder.Services.AddAuthentication(options =>
             {
